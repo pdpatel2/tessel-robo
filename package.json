@@ -7,5 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "camera-vc0706": "^0.1.8",
+    "twilio": "^2.9.0"
+  }
 }
