@@ -10,6 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "camera-vc0706": "^0.1.8",
-    "twilio": "^2.9.0"
+    "twilio": "^2.9.0",
+    "accel-mma84": "^0.2.4",
+    "camera-vc0706": "^0.1.8",
+    "servo-pca9685": "^0.1.3"
   }
 }
