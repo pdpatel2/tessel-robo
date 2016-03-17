@@ -14,7 +14,7 @@ var last_movement_time = Date.now();
 accel.on('ready', function () {
   // Stream accelerometer data
   accel.on('data', function (xyz) {
-    console.log( xyz );
+    // console.log( xyz );
   });
 });
  
@@ -22,19 +22,28 @@ accel.on('error', function(err){
   console.log('Error:', err);
 });
 
+var picCt = 0;
+var picCtStr;
 
 accel.on('ready', function () {
   // Stream accelerometer data
   accel.setOutputRate(1.56, function rateSet() {
     accel.setScaleRange( 8, function scaleSet() {
       accel.on('data', function (xyz) {
-        if(Math.abs(xyz[0]) < 0.2 && Math.abs(xyz[2]) < 0.2) {
-          console.log('xyz is small')
-          camera.takePicture(function (err, image) {
-              if (err) return console.error(err);
-              process.sendfile('audience.jpg', image);
-              console.log('took pic')
-          });
+        console.log(last_movement, xyz[0].toFixed(1))
+        if(last_movement !== xyz[0].toFixed(1)) {
+          last_movement = xyz[0].toFixed(1);
+          var minutes = ((Date.now() - last_movement_time)/1000) /60 ;
+          if(minutes > .2) {
+            camera.takePicture(function (err, image) {
+                if (err) return console.error(err);
+                picCtStr = pad(picCt);
+                process.sendfile('audience' + picCtStr  + '.jpg', image);
+                console.log('took pic');
+                picCt ++;
+                last_movement_time = Date.now();
+            }); 
+          }
         }
       });
     });
@@ -42,7 +51,11 @@ accel.on('ready', function () {
 });
 
 
-
+function pad(n){
+  if(n>99) return n.toString();
+  if(n>9) return '0' + n.toString();
+  return '00' + n.toString();
+}
 
 
 
